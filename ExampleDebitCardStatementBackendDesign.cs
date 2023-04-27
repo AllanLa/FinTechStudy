@@ -84,3 +84,13 @@ public IActionResult GetDebitCardStatement(
     return Ok(debitCardStatementWithPagination);
 }
 
+// Example webhook service that listens for these debit card transactions and records it  in our ledger
+[HttpPost("/webhooks/transactions")]
+public IActionResult HandleTransactionWebhook([FromBody] DebitCardTransaction transaction)
+{
+    // Add transaction to the ledger
+    _ledger.AddTransaction(transaction);
+
+    // Return HTTP status code 200 to acknowledge receipt of webhook
+    return Ok();
+}
